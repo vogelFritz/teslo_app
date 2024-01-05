@@ -1,46 +1,12 @@
 import 'package:formz/formz.dart';
-import 'package:teslo_shop/features/shared/shared.dart';
 
+import 'package:teslo_shop/features/shared/shared.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginFormState {
-  final bool isPosting;
-  final bool isFromPosted;
-  final bool isValid;
-  final Email email;
-  final Password password;
-  LoginFormState(
-      {this.isPosting = false,
-      this.isFromPosted = false,
-      this.isValid = false,
-      this.email = const Email.pure(),
-      this.password = const Password.pure()});
-
-  LoginFormState copyWith(
-          {bool? isPosting,
-          bool? isFromPosted,
-          bool? isValid,
-          Email? email,
-          Password? password}) =>
-      LoginFormState(
-          isPosting: isPosting ?? this.isPosting,
-          isFromPosted: isFromPosted ?? this.isFromPosted,
-          isValid: isValid ?? this.isValid,
-          email: email ?? this.email,
-          password: password ?? this.password);
-
-  @override
-  String toString() {
-    return '''
-  LoginFormState:
-    isPosting: $isPosting
-    isFromPosted: $isFromPosted
-    isValid: $isValid
-    email: $email
-    password: $password
-''';
-  }
-}
+final loginFormProvider =
+    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
+  return LoginFormNotifier();
+});
 
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
   LoginFormNotifier() : super(LoginFormState());
@@ -76,7 +42,41 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   }
 }
 
-final loginFormProvider =
-    StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
-  return LoginFormNotifier();
-});
+class LoginFormState {
+  final bool isPosting;
+  final bool isFormPosted;
+  final bool isValid;
+  final Email email;
+  final Password password;
+  LoginFormState(
+      {this.isPosting = false,
+      this.isFormPosted = false,
+      this.isValid = false,
+      this.email = const Email.pure(),
+      this.password = const Password.pure()});
+
+  LoginFormState copyWith(
+          {bool? isPosting,
+          bool? isFromPosted,
+          bool? isValid,
+          Email? email,
+          Password? password}) =>
+      LoginFormState(
+          isPosting: isPosting ?? this.isPosting,
+          isFormPosted: isFromPosted ?? this.isFormPosted,
+          isValid: isValid ?? this.isValid,
+          email: email ?? this.email,
+          password: password ?? this.password);
+
+  @override
+  String toString() {
+    return '''
+  LoginFormState:
+    isPosting: $isPosting
+    isFromPosted: $isFormPosted
+    isValid: $isValid
+    email: $email
+    password: $password
+''';
+  }
+}
