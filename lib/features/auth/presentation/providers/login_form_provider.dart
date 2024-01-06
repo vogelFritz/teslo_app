@@ -40,7 +40,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
     final password = Password.dirty(state.password.value);
 
     state = state.copyWith(
-        isFromPosted: true,
+        isFormPosted: true,
         email: email,
         password: password,
         isValid: Formz.validate([email, password]));
@@ -62,13 +62,13 @@ class LoginFormState {
 
   LoginFormState copyWith(
           {bool? isPosting,
-          bool? isFromPosted,
+          bool? isFormPosted,
           bool? isValid,
           Email? email,
           Password? password}) =>
       LoginFormState(
           isPosting: isPosting ?? this.isPosting,
-          isFormPosted: isFromPosted ?? this.isFormPosted,
+          isFormPosted: isFormPosted ?? this.isFormPosted,
           isValid: isValid ?? this.isValid,
           email: email ?? this.email,
           password: password ?? this.password);
