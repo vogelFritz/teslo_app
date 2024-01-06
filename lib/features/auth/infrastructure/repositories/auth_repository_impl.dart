@@ -4,7 +4,7 @@ import 'package:teslo_shop/features/auth/infrastructure/infrastructure.dart';
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDatasource datasource;
 
-  AuthRepositoryImpl(AuthDatasource? datasource)
+  AuthRepositoryImpl({AuthDatasource? datasource})
       : datasource = datasource ?? AuthDatasourceImpl();
 
   @override
