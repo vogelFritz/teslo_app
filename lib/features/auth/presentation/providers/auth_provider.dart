@@ -27,7 +27,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  void registerUser(String email, String password, String fullName) async {}
+  Future<void> registerUser(
+      String email, String password, String fullName) async {
+    try {
+      await authRepository.register(email, password, fullName);
+    } on CustomError catch (e) {
+      logout(e.message);
+    } catch (e) {
+      logout('Error no controlado');
+    }
+  }
 
   void checkAuthStatus() async {}
 
@@ -44,8 +53,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
         errorMessage: errorMessage);
   }
 }
-
-enum AuthStatus { checking, authenticated, notAuthenticated }
 
 class AuthState {
   final AuthStatus authStatus;
@@ -64,3 +71,5 @@ class AuthState {
           user: user ?? this.user,
           errorMessage: errorMessage ?? this.errorMessage);
 }
+
+enum AuthStatus { checking, authenticated, notAuthenticated }
