@@ -68,7 +68,7 @@ class _RegisterForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textStyles = Theme.of(context).textTheme;
     final registerForm = ref.watch(registerFormProvider);
-    final repeatedPassword = '';
+    String repeatedPassword = '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
@@ -105,7 +105,9 @@ class _RegisterForm extends ConsumerWidget {
           CustomTextFormField(
               label: 'Repita la contraseña',
               obscureText: true,
-              onChanged: (value) {},
+              onChanged: (value) {
+                repeatedPassword = value;
+              },
               errorMessage: registerForm.isFormPosted &&
                       registerForm.password.value == repeatedPassword
                   ? 'Las contraseñas no son iguales'
