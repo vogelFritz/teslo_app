@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:teslo_shop/features/auth/presentation/providers/register_form_provider.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -66,7 +67,7 @@ class _RegisterForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textStyles = Theme.of(context).textTheme;
-    //TODO: Usar registerFormProvider
+    final registerForm = ref.watch(registerFormProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
@@ -74,20 +75,31 @@ class _RegisterForm extends ConsumerWidget {
           const SizedBox(height: 50),
           Text('Nueva cuenta', style: textStyles.titleMedium),
           const SizedBox(height: 50),
-          const CustomTextFormField(
-            label: 'Nombre completo',
-            keyboardType: TextInputType.emailAddress,
-          ),
+          CustomTextFormField(
+              label: 'Nombre completo',
+              keyboardType: TextInputType.emailAddress,
+              onChanged:
+                  ref.read(registerFormProvider.notifier).onFullNameChanged,
+              errorMessage: registerForm.isFormPosted
+                  ? registerForm.fullName.errorMessage
+                  : null),
           const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-          ),
+          CustomTextFormField(
+              label: 'Correo',
+              keyboardType: TextInputType.emailAddress,
+              onChanged: ref.read(registerFormProvider.notifier).onEmailChanged,
+              errorMessage: registerForm.isFormPosted
+                  ? registerForm.email.errorMessage
+                  : null),
           const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-          ),
+          CustomTextFormField(
+              label: 'Contraseña',
+              obscureText: true,
+              onChanged:
+                  ref.read(registerFormProvider.notifier).onPasswordChanged,
+              errorMessage: registerForm.isFormPosted
+                  ? registerForm.password.errorMessage
+                  : null),
           const SizedBox(height: 30),
           const CustomTextFormField(
             label: 'Repita la contraseña',
@@ -100,7 +112,9 @@ class _RegisterForm extends ConsumerWidget {
               child: CustomFilledButton(
                 text: 'Crear',
                 buttonColor: Colors.black,
-                onPressed: () {},
+                onPressed: () {
+                  ref.read(registerFormProvider.notifier).onFormSubmit();
+                },
               )),
           const Spacer(flex: 2),
           Row(
