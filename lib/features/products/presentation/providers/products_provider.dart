@@ -26,7 +26,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       state = state.copyWith(isLoading: false, isLastPage: true);
       return;
     }
-    state.copyWith(
+    state = state.copyWith(
         isLastPage: false,
         isLoading: false,
         offset: state.offset + 10,
