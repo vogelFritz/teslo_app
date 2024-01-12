@@ -51,7 +51,9 @@ class _ProductView extends ConsumerWidget {
         ),
         const SizedBox(height: 10),
         Center(
-            child: Text(productForm.title.value, style: textStyles.titleSmall)),
+            child: Center(
+                child: Text(productForm.title.value,
+                    style: textStyles.titleSmall))),
         const SizedBox(height: 10),
         _ProductInformation(product: product),
       ],
