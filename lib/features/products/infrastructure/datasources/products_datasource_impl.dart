@@ -52,7 +52,9 @@ class ProductsDatasourceImpl extends ProductsDatasource {
     final List<Future<String>> uploadJob =
         photosToUpload.map((e) => _uploadFile(e)).toList();
 
-    return [...photosToIgnore];
+    final List<String> newImages = await Future.wait(uploadJob);
+
+    return [...photosToIgnore, ...newImages];
   }
 
   @override
