@@ -9,25 +9,39 @@ class ProductScreen extends ConsumerWidget {
 
   const ProductScreen({super.key, required this.productId});
 
+  void showSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Producto actualizado')));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productProvider(productId));
-    return Scaffold(
-      appBar: AppBar(title: const Text('Editar Producto'), actions: [
-        IconButton(
-            icon: const Icon(Icons.camera_alt_outlined), onPressed: () {})
-      ]),
-      body: productState.isLoading
-          ? const FullScreenLoader()
-          : _ProductView(product: productState.product!),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            if (productState.product == null) return;
-            ref
-                .read(productFormProvider(productState.product!).notifier)
-                .onFormSubmit();
-          },
-          child: const Icon(Icons.save_outlined)),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Editar Producto'), actions: [
+          IconButton(
+              icon: const Icon(Icons.camera_alt_outlined), onPressed: () {})
+        ]),
+        body: productState.isLoading
+            ? const FullScreenLoader()
+            : _ProductView(product: productState.product!),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (productState.product == null) return;
+              ref
+                  .read(productFormProvider(productState.product!).notifier)
+                  .onFormSubmit()
+                  .then((value) {
+                if (!value) return;
+                showSnackbar(context);
+              });
+              FocusScope.of(context).unfocus();
+            },
+            child: const Icon(Icons.save_outlined)),
+      ),
     );
   }
 }
@@ -169,6 +183,7 @@ class _SizeSelector extends StatelessWidget {
       selected: Set.from(selectedSizes),
       onSelectionChanged: (newSelection) {
         onSizesChanged(List.from(newSelection));
+        FocusScope.of(context).unfocus();
       },
       multiSelectionEnabled: true,
     );
@@ -204,6 +219,7 @@ class _GenderSelector extends StatelessWidget {
         selected: {selectedGender},
         onSelectionChanged: (newSelection) {
           onGenderChanged(newSelection.first);
+          FocusScope.of(context).unfocus();
         },
       ),
     );
